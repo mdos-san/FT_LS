@@ -42,9 +42,42 @@ void	ft_lstinsert(t_list *start, t_list *new)
 }
 
 /*
+**
+**	This function sort a list in ascii order
+**
+*/
+
+void	ft_lstsort(t_list *list)
+{
+	t_list	*cursor;
+	int	is_not_sorted;
+	char	*tmp;
+
+	is_not_sorted = 0;
+	cursor = list;
+	while (cursor)
+	{
+		if (cursor->next != NULL)
+		{
+			if (ft_strcmp((char *)cursor->content, (char *)cursor->next->content) > 0)
+			{
+				is_not_sorted++;
+				tmp = (char *)cursor->content;
+				cursor->content = cursor->next->content;
+				cursor->next->content = (void *)tmp;	
+			}
+		}
+		cursor = cursor->next;
+	}
+	if (is_not_sorted > 0)
+		ft_lstsort(list);
+}
+
+/*
 **	This function init flags values
 **
-**	It return an address representing the new begining of the pile in case flags is first in pile (because flags is removed from the pile)
+**	It return an address representing the new begining of the pile in case flags is first in pile
+**	(because flags is removed from the pile)
 */
 
 t_list	*init_flags(char *flags, t_list *list)
@@ -69,7 +102,6 @@ t_list	*init_flags(char *flags, t_list *list)
 				flags[1]++;
 			if (ft_strchr(value, (int)'R'))
 				flags[2]++;
-
 			if (previous != NULL)
 			{
 				list = list->next;			
@@ -93,6 +125,8 @@ t_list	*init_flags(char *flags, t_list *list)
 			list = list->next;
 		}
 	}
+	if (new_begining == NULL)
+		new_begining = ft_lstnew(".", 1);
 	return (new_begining);
 }
 
@@ -126,9 +160,10 @@ int	main(int ac, char **av)
 	cursor = parameters;
 	parameters = init_flags(flags, cursor);
 	cursor = parameters;
+	ft_lstsort(parameters);
 	while (cursor != NULL)
 	{
-		if (ac > 2)
+		if (ac > 2 || flags[2])
 		{
 			ft_putstr(cursor->content);
 			ft_putendl(":");
@@ -163,8 +198,8 @@ int	main(int ac, char **av)
 		{
 			ft_putendl("An error as occured, errno not used now sorry :P");
 		}
-		ft_putchar('\n');
 		cursor = cursor->next;
+		(cursor != NULL) ? ft_putchar('\n') : 0;
 	}
 	return (0);
 }
