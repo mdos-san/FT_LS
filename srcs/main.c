@@ -23,6 +23,26 @@ t_list	*load_parameters(int ac, char **av)
 	return (parameters);
 }
 
+/*
+**
+**	This function can be added to libft;
+**
+**	This function insert a new element in a t_list chain;
+**
+*/
+
+void	ft_lstinsert(t_list *start, t_list *new)
+{
+	new->next = start->next;
+	start->next = new;
+}
+
+/*
+**	Type of directory is 4;
+**	Type of normal file sems to be 8;
+**
+*/
+
 int	main(int ac, char **av)
 {
 	DIR		*dir_stream;
@@ -30,6 +50,8 @@ int	main(int ac, char **av)
 	char		end;
 	t_list		*parameters;
 	t_list		*cursor;
+	char		*part_path;
+	char		*full_path;
 
 	parameters = load_parameters(ac, av);
 	cursor = parameters;
@@ -48,7 +70,21 @@ int	main(int ac, char **av)
 			{
 				dir_entity = readdir(dir_stream);
 				if (dir_entity != NULL)
-					ft_putendl(dir_entity->d_name);
+				{
+					if (dir_entity->d_name[0] != '.')
+					{
+						ft_putendl(dir_entity->d_name);
+						//This part add a new directorie to explore in previtision of -R arg... haha
+						if ((int)dir_entity->d_type == 4)
+						{
+							part_path = ft_strjoin((char*)cursor->content, "/");
+							full_path = ft_strjoin(part_path, dir_entity->d_name);
+							ft_lstinsert(cursor, ft_lstnew((void *)full_path, ft_strlen(full_path)));
+							ft_strdel(&part_path);
+							ft_strdel(&full_path);
+						}
+					}
+				}
 				else
 					end++;
 			}
