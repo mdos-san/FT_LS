@@ -7,4 +7,11 @@
 
 # include "libft.h"
 
+typedef struct	s_dir_container
+{
+	char		*dir_name;
+	t_list		*files_names;
+	t_list		*files_types;
+}				t_dir_container;
+
 #endif

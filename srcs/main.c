@@ -2,27 +2,33 @@
 
 t_list	*load_parameters(int ac, char **av)
 {
-	t_list		*parameters;
-	int		nb;
-	int		index;
+	t_list			*parameters;
+	int				nb;
+	int				index;
+	t_dir_container	container;
 
 	nb = ac;
 	index = 2;
 	parameters = NULL;
+	container.files_names = NULL;
+	container.files_types = NULL;
 	if (ac >= 2)
 	{
-		parameters = ft_lstnew(av[1], ft_strlen(av[1]));
+		container.dir_name = ft_strdup(av[1]);
+		parameters = ft_lstnew(&container, sizeof(t_dir_container));
 		nb--;
 		while (nb != 1)
 		{
-			ft_lstadd(&parameters, ft_lstnew(av[index], ft_strlen(av[index])));
+			container.dir_name = ft_strdup(av[index]);
+			ft_lstadd(&parameters, ft_lstnew(&container, sizeof(t_dir_container)));
 			index++;
 			nb--;
 		}
 	}
 	else
 	{
-		parameters = ft_lstnew(".", 1);
+		container.dir_name = ft_strdup(".");
+		parameters = ft_lstnew(&container, sizeof(t_dir_container));
 	}
 	return (parameters);
 }
@@ -47,11 +53,13 @@ void	ft_lstinsert(t_list *start, t_list *new)
 **
 */
 
-void	ft_lstsort(t_list *list)
+void	ft_lstsort(t_list *list, char rev)
 {
 	t_list	*cursor;
-	int	is_not_sorted;
+	int		is_not_sorted;
 	char	*tmp;
+	t_dir_container	*current;
+	t_dir_container	*next;
 
 	is_not_sorted = 0;
 	cursor = list;
@@ -59,18 +67,33 @@ void	ft_lstsort(t_list *list)
 	{
 		if (cursor->next != NULL)
 		{
-			if (ft_strcmp((char *)cursor->content, (char *)cursor->next->content) > 0)
+			current = (t_dir_container *)cursor->content;
+			next = (t_dir_container *)cursor->next->content;
+			if (rev == 0)
 			{
-				is_not_sorted++;
-				tmp = (char *)cursor->content;
-				cursor->content = cursor->next->content;
-				cursor->next->content = (void *)tmp;	
+				if (ft_strcmp(current->dir_name , next->dir_name) > 0)
+				{
+					is_not_sorted++;
+					tmp = current->dir_name;
+					current->dir_name = next->dir_name;
+					next->dir_name = tmp;	
+				}
+			}
+			else
+			{
+				if (ft_strcmp(current->dir_name , next->dir_name) < 0)
+				{
+					is_not_sorted++;
+					tmp = current->dir_name;
+					current->dir_name = next->dir_name;
+					next->dir_name = tmp;	
+				}
 			}
 		}
 		cursor = cursor->next;
 	}
 	if (is_not_sorted > 0)
-		ft_lstsort(list);
+		ft_lstsort(list, rev);
 }
 
 /*
@@ -95,13 +118,15 @@ t_list	*init_flags(char *flags, t_list *list)
 	flags[4] = 0;
 	while (list)
 	{
-		value = (char *)list->content;
+		value = ((t_dir_container *)list->content)->dir_name;
 		if (value[0] == '-')
 		{
 			if (ft_strchr(value, (int)'a'))
 				flags[1]++;
 			if (ft_strchr(value, (int)'R'))
 				flags[2]++;
+			if (ft_strchr(value, (int)'r'))
+				flags[3]++;
 			if (previous != NULL)
 			{
 				list = list->next;			
@@ -147,29 +172,31 @@ t_list	*init_flags(char *flags, t_list *list)
 
 int	main(int ac, char **av)
 {
-	DIR		*dir_stream;
+	DIR				*dir_stream;
 	struct dirent	*dir_entity;
-	char		end;
-	t_list		*parameters;
-	t_list		*cursor;
-	char		*part_path;
-	char		*full_path;
-	char		flags[5];
+	char			end;
+	t_list			*parameters;
+	t_list			*cursor;
+	char			*part_path;
+	char			*full_path;
+	char			flags[5];
+	t_dir_container	*d_content;
 
 	parameters = load_parameters(ac, av);
 	cursor = parameters;
 	parameters = init_flags(flags, cursor);
 	cursor = parameters;
-	ft_lstsort(parameters);
+	ft_lstsort(parameters, flags[3]);
 	while (cursor != NULL)
 	{
+		d_content = (t_dir_container *)cursor->content;
 		if (ac > 2 || flags[2])
 		{
-			ft_putstr(cursor->content);
+			ft_putstr(d_content->dir_name);
 			ft_putendl(":");
 		}
 		end = 0;
-		dir_stream = opendir((char *)cursor->content);
+		dir_stream = opendir(d_content->dir_name);
 		if (dir_stream != NULL)
 		{
 			while (end == 0)
@@ -182,11 +209,12 @@ int	main(int ac, char **av)
 						ft_putendl(dir_entity->d_name);
 						if (flags[2] == 1 && (int)dir_entity->d_type == 4)
 						{
-							part_path = ft_strjoin((char*)cursor->content, "/");
+							ft_putendl("coucou1");
+							part_path = ft_strjoin(d_content->dir_name, "/");
 							full_path = ft_strjoin(part_path, dir_entity->d_name);
-							ft_lstinsert(cursor, ft_lstnew((void *)full_path, ft_strlen(full_path)));
+							ft_lstinsert(cursor, ft_lstnew(&(t_dir_container){full_path, NULL, NULL}, sizeof(t_dir_container)));
 							ft_strdel(&part_path);
-							ft_strdel(&full_path);
+							ft_putendl("coucou2");
 						}
 					}
 				}
