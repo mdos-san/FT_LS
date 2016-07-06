@@ -22,6 +22,6 @@ clean:
 	rm -rf $(SRC_O)
 
 fclean:		clean
-	rm -rf $(NAME)
+	rm -rf $(NAME) libft.a
 
 re:		fclean all
