@@ -16,7 +16,7 @@ includes/libft.h:
 
 $(NAME):
 	gcc -c srcs/$(SRC_C) -I./includes
-	gcc -o $(NAME) $(SRC_O)
+	gcc -o $(NAME) $(SRC_O) -L. libft.a
 
 clean:
 	rm -rf $(SRC_O)
