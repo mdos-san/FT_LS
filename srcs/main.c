@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:06:12 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 23:05:47 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/08 00:44:34 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,18 @@ int	main(int ac, char **av)
 	t_dir_container	*d_content;
 	t_list			*tmp;
 	t_file			file;
+	char			print_name;
 
 	parameters = load_parameters(ac, av);
 	cursor = parameters;
 	parameters = init_flags(flags, cursor);
 	cursor = parameters;
 	ft_lstsort(parameters, flags[3]);
+	(ft_lstcount(parameters) >= 2) ? (print_name = 1) : (print_name = 0);
 	while (cursor != NULL)
 	{
 		d_content = (t_dir_container *)cursor->content;
-		if (ac > 2 || flags[2])
+		if (print_name)
 		{
 			ft_putstr(d_content->dir_name);
 			ft_putendl(":");

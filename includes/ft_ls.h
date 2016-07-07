@@ -1,9 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/07/08 00:13:59 by mdos-san          #+#    #+#             */
+/*   Updated: 2016/07/08 00:26:30 by mdos-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_LS_H
 # define FT_LS_H
 
 # include <sys/types.h>
+# include <sys/stat.h>
+# include <unistd.h>
 # include <dirent.h>
 # include <stdlib.h>
+# include <pwd.h>
+# include <grp.h>
+# include <time.h>
 
 # include "libft.h"
 
@@ -19,13 +36,23 @@ typedef struct	s_file
 	int			type;
 }				t_file;
 
-t_list	*load_parameters(int ac, char **av);
-void	ft_lstinsert(t_list *start, t_list *new);
-void	ft_lstsort(t_list *list, char rev);
-t_list	*init_flags(char *flags, t_list *list);
-void	sort_name(t_list *list, char rev);
-void	render_files(t_dir_container *dir_content, char *flags);
-void	ft_lstpushback(t_list *lst, t_list *new);
-int		ft_lstcount(t_list *lst);
+typedef struct	s_date
+{
+	int			years;
+	char		months[3];
+	int			days;
+	int			hours;
+	int			mins;
+	int			sec;
+}				t_date;
+
+t_list			*load_parameters(int ac, char **av);
+void			ft_lstinsert(t_list *start, t_list *new);
+void			ft_lstsort(t_list *list, char rev);
+t_list			*init_flags(char *flags, t_list *list);
+void			sort_name(t_list *list, char rev);
+void			render_files(t_dir_container *dir_content, char *flags);
+void			ft_lstpushback(t_list *lst, t_list *new);
+int				ft_lstcount(t_list *lst);
 
 #endif
