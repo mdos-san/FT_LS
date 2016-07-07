@@ -1,8 +1,15 @@
 NAME=		ft_ls
 
-SRC_C=		main.c
+TMP_C=		main.c\
+			load_parameters.c\
+			ft_lstinsert.c\
+			ft_lstsort.c\
+			init_flags.c\
+			sort_name.c\
+			render_files.c
 
-SRC_O=		$(SRC_C:.c=.o)
+SRC_C=		$(TMP_C:%=srcs/%)
+SRC_O=		$(TMP_C:.c=.o)
 
 all: libft.a includes/libft.h $(NAME)
 
@@ -15,7 +22,7 @@ includes/libft.h:
 	cp libft/includes/libft.h includes
 
 $(NAME):
-	gcc -c srcs/$(SRC_C) -I./includes
+	gcc -c $(SRC_C) -I./includes
 	gcc -o $(NAME) $(SRC_O) -L. libft.a
 
 clean:
