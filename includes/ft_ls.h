@@ -21,5 +21,6 @@ t_list	*init_flags(char *flags, t_list *list);
 void	sort_name(t_list *list, char rev);
 void	render_files(t_dir_container *dir_content, char *flags);
 void	ft_lstpushback(t_list *lst, t_list *new);
+int		ft_lstcount(t_list *lst);
 
 #endif

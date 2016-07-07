@@ -7,7 +7,8 @@ TMP_C=		main.c\
 			init_flags.c\
 			sort_name.c\
 			render_files.c\
-			ft_lstpushback.c
+			ft_lstpushback.c\
+			ft_lstcount.c
 
 SRC_C=		$(TMP_C:%=srcs/%)
 SRC_O=		$(TMP_C:.c=.o)

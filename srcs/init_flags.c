@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:08:24 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 21:34:28 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/07 22:10:31 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,32 @@
 **	It return an address representing the new begining of the pile in case flags is first in pile
 **	(because flags is removed from the pile)
 */
+static t_list	*remove_flags(t_list *list)
+{
+	t_list	*cursor;
+	t_list	*start;
+	char	*value;
+	char	end;
+
+	end = 0;
+	cursor = list;
+	start = list;
+	while (cursor && end == 0)
+	{
+		value = ((t_dir_container *)cursor->content)->dir_name;
+		if (value[0] == '-')
+		{
+			start = cursor->next;
+			ft_strdel(&value);
+			free(cursor->content);
+			free(cursor);
+			cursor = start;
+		}
+		else
+			end++;
+	}
+	return (start);
+}
 
 t_list	*init_flags(char *flags, t_list *list)
 {
@@ -48,5 +74,5 @@ t_list	*init_flags(char *flags, t_list *list)
 			end++;	
 		cursor = cursor->next;
 	}
-	return (list);
+	return (remove_flags(list));
 }
