@@ -155,6 +155,62 @@ t_list	*init_flags(char *flags, t_list *list)
 	return (new_begining);
 }
 
+/*
+**
+**	This function sort file name list by ascii order
+**
+*/
+
+void	sort_name(t_list *list, char rev)
+{
+	t_list	*cursor;
+	int		is_not_sorted;
+	char	*tmp;
+	t_list	*current;
+	t_list	*next;
+
+	is_not_sorted = 0;
+	cursor = list;
+	while (cursor)
+	{
+		if (cursor->next != NULL)
+		{
+			current = cursor;
+			next = cursor->next;
+			if (rev == 0)
+			{
+				if (ft_strcmp(current->content , next->content) > 0)
+				{
+					is_not_sorted++;
+					tmp = current->content;
+					current->content = next->content;
+					next->content = tmp;	
+				}
+			}
+			else
+			{
+				if (ft_strcmp(current->content , next->content) < 0)
+				{
+					is_not_sorted++;
+					tmp = current->content;
+					current->content = next->content;
+					next->content = tmp;	
+				}
+			}
+		}
+		cursor = cursor->next;
+	}
+	if (is_not_sorted > 0)
+		sort_name(list, rev);
+
+}
+
+/*
+**
+**	This function have to render files of a dir and take care of flag
+**
+*/
+
 void	render_files(t_dir_container *dir_content, char *flags)
 {
 	t_list	*names;
@@ -162,9 +218,11 @@ void	render_files(t_dir_container *dir_content, char *flags)
 
 	names = dir_content->files_names;
 	types = dir_content->files_types;
+	sort_name(names, flags[3]);
 	while (names)
 	{
-		ft_putendl((char *)names->content);
+		if (((char *)names->content)[0] != '.' || flags[1])
+			ft_putendl((char *)names->content);
 		names = names->next;
 		types = types->next;
 	}
