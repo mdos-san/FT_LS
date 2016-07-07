@@ -6,11 +6,20 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:12:00 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 21:54:01 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/07 23:06:24 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+/*
+**	This fucntion render the l flag
+*/
+
+static void	render_l_flag(t_file *file, char *flags)
+{
+	ft_putendl(file->name);
+}
 
 /*
 **
@@ -20,17 +29,21 @@
 
 void	render_files(t_dir_container *dir_content, char *flags)
 {
-	t_list	*names;
-	t_list	*types;
+	t_list	*files;
+	t_file	*file;
 
-	names = dir_content->files_names;
-	types = dir_content->files_types;
-	sort_name(names, flags[3]);
-	while (names)
+	files = dir_content->files;
+	sort_name(files, flags[3]);
+	while (files)
 	{
-		if (((char *)names->content)[0] != '.' || flags[1])
-			ft_putendl((char *)names->content);
-		names = names->next;
-		types = types->next;
+		file = (t_file *)files->content;
+		if (flags[0])
+			render_l_flag(file, flags);
+		else
+		{
+			if (file->name[0] != '.' || flags[1])
+				ft_putendl(file->name);
+		}
+		files = files->next;
 	}
 }

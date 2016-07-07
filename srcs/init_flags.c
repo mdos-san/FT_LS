@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:08:24 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 22:10:31 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/07 22:44:07 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ t_list	*init_flags(char *flags, t_list *list)
 		value = ((t_dir_container *)cursor->content)->dir_name;
 		if (value[0] == '-')
 		{
+			if (ft_strchr(value, (int)'l'))
+				flags[0]++;
 			if (ft_strchr(value, (int)'a'))
 				flags[1]++;
 			if (ft_strchr(value, (int)'R'))

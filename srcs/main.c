@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:06:12 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 21:50:09 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/07 23:05:47 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int	main(int ac, char **av)
 	char			flags[5];
 	t_dir_container	*d_content;
 	t_list			*tmp;
-	t_list			*b_files;
-	t_list			*b_types;
+	t_file			file;
 
 	parameters = load_parameters(ac, av);
 	cursor = parameters;
@@ -64,30 +63,14 @@ int	main(int ac, char **av)
 				dir_entity = readdir(dir_stream);
 				if (dir_entity != NULL)
 				{
-					tmp = ft_lstnew(dir_entity->d_name, ft_strlen(dir_entity->d_name) + 1);
-					(d_content->files_names == NULL) ? (d_content->files_names = tmp) : (d_content->files_names->next = tmp);
-					(d_content->files_names->next != NULL) ? (d_content->files_names = d_content->files_names->next) : (b_files = d_content->files_names);
-					tmp = ft_lstnew(&dir_entity->d_type, sizeof(dir_entity->d_type));
-					(d_content->files_types == NULL) ? (d_content->files_types = tmp) : (d_content->files_types->next = tmp);
-					(d_content->files_types->next != NULL) ? (d_content->files_types = d_content->files_types->next) :  (b_types = d_content->files_types);
-/*					if (flags[1] == 1 || dir_entity->d_name[0] != '.')
-					{
-						ft_putendl(dir_entity->d_name);
-						if (flags[2] == 1 && (int)dir_entity->d_type == 4)
-						{
-							part_path = ft_strjoin(d_content->dir_name, "/");
-							full_path = ft_strjoin(part_path, dir_entity->d_name);
-							ft_lstinsert(cursor, ft_lstnew(&(t_dir_container){full_path, NULL, NULL}, sizeof(t_dir_container)));
-							ft_strdel(&part_path);
-						}
-					}
-*/
+					file.name = ft_strdup(dir_entity->d_name);
+					file.type = 0;
+					tmp = ft_lstnew(&file, sizeof(t_file));
+					(d_content->files == NULL) ? (d_content->files = tmp) : ft_lstpushback(d_content->files, tmp);
 				}
 				else
 					end++;
 			}
-			d_content->files_names = b_files;
-			d_content->files_types = b_types;
 			render_files(d_content, flags);
 		}
 		else

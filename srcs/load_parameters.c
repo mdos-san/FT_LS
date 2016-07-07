@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 20:57:48 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 21:44:14 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/07 22:27:25 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ t_list	*load_parameters(int ac, char **av)
 	nb = ac;
 	index = 2;
 	parameters = NULL;
-	container.files_names = NULL;
-	container.files_types = NULL;
+	container.files = NULL;
 	if (ac >= 2)
 	{
 		container.dir_name = ft_strdup(av[1]);

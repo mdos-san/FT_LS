@@ -10,9 +10,14 @@
 typedef struct	s_dir_container
 {
 	char		*dir_name;
-	t_list		*files_names;
-	t_list		*files_types;
+	t_list		*files;
 }				t_dir_container;
+
+typedef struct	s_file
+{
+	char		*name;
+	int			type;
+}				t_file;
 
 t_list	*load_parameters(int ac, char **av);
 void	ft_lstinsert(t_list *start, t_list *new);
