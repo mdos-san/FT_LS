@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_files.c                                     :+:      :+:    :+:   */
+/*   ft_lstpushback.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/07 21:12:00 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 21:54:01 by mdos-san         ###   ########.fr       */
+/*   Created: 2016/07/07 21:20:59 by mdos-san          #+#    #+#             */
+/*   Updated: 2016/07/07 21:23:16 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-/*
-**
-**	This function have to render files of a dir and take care of flag
-**
-*/
-
-void	render_files(t_dir_container *dir_content, char *flags)
+void	ft_lstpushback(t_list *lst, t_list *new)
 {
-	t_list	*names;
-	t_list	*types;
+	t_list	*cursor;
 
-	names = dir_content->files_names;
-	types = dir_content->files_types;
-	sort_name(names, flags[3]);
-	while (names)
+	cursor = lst;
+	while (cursor->next)
 	{
-		if (((char *)names->content)[0] != '.' || flags[1])
-			ft_putendl((char *)names->content);
-		names = names->next;
-		types = types->next;
+		cursor = cursor->next;
 	}
+	cursor->next = new;
 }

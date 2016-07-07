@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 20:57:48 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 21:04:19 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/07 21:44:14 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_list	*load_parameters(int ac, char **av)
 		while (nb != 1)
 		{
 			container.dir_name = ft_strdup(av[index]);
-			ft_lstadd(&parameters, ft_lstnew(&container, sizeof(t_dir_container)));
+			ft_lstpushback(parameters, ft_lstnew(&container, sizeof(t_dir_container)));
 			index++;
 			nb--;
 		}

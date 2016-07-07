@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:06:12 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 21:12:55 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/07 21:50:09 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int ac, char **av)
 				dir_entity = readdir(dir_stream);
 				if (dir_entity != NULL)
 				{
-					tmp = ft_lstnew(dir_entity->d_name, ft_strlen(dir_entity->d_name));
+					tmp = ft_lstnew(dir_entity->d_name, ft_strlen(dir_entity->d_name) + 1);
 					(d_content->files_names == NULL) ? (d_content->files_names = tmp) : (d_content->files_names->next = tmp);
 					(d_content->files_names->next != NULL) ? (d_content->files_names = d_content->files_names->next) : (b_files = d_content->files_names);
 					tmp = ft_lstnew(&dir_entity->d_type, sizeof(dir_entity->d_type));
@@ -92,7 +92,7 @@ int	main(int ac, char **av)
 		}
 		else
 		{
-			ft_putendl("An error as occured, errno not used now sorry :P");
+			ft_putendl("ft_ls: An error as occured, errno not used now sorry :P");
 		}
 		cursor = cursor->next;
 		(cursor != NULL) ? ft_putchar('\n') : 0;
