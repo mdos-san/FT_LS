@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:06:12 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/08 05:43:22 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/08 07:24:02 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int ac, char **av)
 	t_list			*tmp;
 	t_file			file;
 	char			print_name;
+	char			*error;
 
 	parameters = load_parameters(ac, av);
 	cursor = parameters;
@@ -49,10 +50,11 @@ int	main(int ac, char **av)
 	(ft_lstcount(parameters) >= 2) ? (print_name = 1) : (print_name = 0);
 	(ft_lstcount(parameters) == 0) ? (parameters = load_parameters(0, av)) : 0 ;
 	cursor = parameters;
+	end = 0;
 	while (cursor != NULL)
 	{
 		d_content = (t_dir_container *)cursor->content;
-		if (print_name)
+		if (print_name || (flags[2] && end == 1))
 		{
 			ft_putstr(d_content->dir_name);
 			ft_putendl(":");
@@ -79,7 +81,9 @@ int	main(int ac, char **av)
 		}
 		else
 		{
-			ft_putendl("ft_ls: An error as occured, errno not used now sorry :P");
+			error = ft_strjoin("ft_ls: ", d_content->dir_name);
+			perror(error);
+			ft_strdel(&error);
 		}
 		cursor = cursor->next;
 		(cursor != NULL) ? ft_putchar('\n') : 0;

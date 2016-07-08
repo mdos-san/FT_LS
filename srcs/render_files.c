@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:12:00 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/08 05:45:26 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/08 06:59:34 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,16 +105,35 @@ static void	render_l_flag(char *dir, t_file *file, char *flags, t_view v)
 	}
 }
 
-void	add_dir(t_list *lst, char *path, char *file)
+static void	add_dir(t_list *lst, char *path, char *file, int	*b)
 {
 	t_dir_container	dir;
 	t_list	*new;
+	t_list	*cur;
+	int		i;
 
+	i = 0;
 	dir.dir_name = ft_strdup(path);
 	dir.files = NULL;
+	cur = lst;
 	new = ft_lstnew(&dir, sizeof(t_dir_container));
-	(lst->next != NULL) ? (new->next = lst->next) : (lst->next = new);
-	lst->next = new;
+	if (*b == 0)
+	{
+		(lst->next != NULL) ? (new->next = lst->next) : (lst->next = new);
+		lst->next = new;
+		*b += 1;
+	}
+	else
+	{
+		while (i < *b)
+		{
+			cur = cur->next;
+			i++;
+		}
+		(cur->next != NULL) ? (new->next = cur->next) : (cur->next = new);
+		cur->next = new;
+		*b += 1;
+	}
 }
 
 /*
@@ -134,6 +153,7 @@ void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 	char	*part;
 	struct passwd	*f_pass;
 	struct group	*f_grp;
+	int			add_bool;
 
 	files = dir_content->files;
 	sort_name(files, flags[3]);
@@ -143,6 +163,7 @@ void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 	v.grp = 0;
 	v.size = 0;
 	part = NULL;
+	add_bool = 0;
 	while (files)
 	{
 		file = (t_file *)files->content;
@@ -164,7 +185,7 @@ void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 		}
 		files = files->next;
 	}
-	if (flags[0])
+	if (flags[0] && total > 0)
 	{
 		ft_putstr("total ");
 		ft_putendl(ft_itoa(total));
@@ -179,7 +200,7 @@ void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 			(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
 			lstat(path, &f_stat);
 			if (flags[2])
-				(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name) : 0;
+				(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name, &add_bool) : 0;
 			render_l_flag(dir_content->dir_name, file, flags, v);
 		}
 		else
@@ -190,7 +211,7 @@ void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 			if (file->name[0] != '.' || flags[1])
 			{
 				if (flags[2])
-					(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name) : 0;
+					(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name, &add_bool) : 0;
 				ft_putendl(file->name);
 			}
 			ft_strdel(&part);

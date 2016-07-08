@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/08 00:13:59 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/08 05:32:20 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/08 07:04:00 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <pwd.h>
 # include <grp.h>
 # include <time.h>
+
+# include <stdio.h>
 
 # include "libft.h"
 
