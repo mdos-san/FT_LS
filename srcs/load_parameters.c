@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 20:57:48 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 22:27:25 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/08 02:09:41 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,3 @@ t_list	*load_parameters(int ac, char **av)
 	}
 	return (parameters);
 }
-
-

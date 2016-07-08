@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:06:12 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/08 00:44:34 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/08 02:29:34 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ int	main(int ac, char **av)
 	parameters = load_parameters(ac, av);
 	cursor = parameters;
 	parameters = init_flags(flags, cursor);
-	cursor = parameters;
 	ft_lstsort(parameters, flags[3]);
 	(ft_lstcount(parameters) >= 2) ? (print_name = 1) : (print_name = 0);
+	(ft_lstcount(parameters) == 0) ? (parameters = load_parameters(0, av)) : 0 ;
+	cursor = parameters;
 	while (cursor != NULL)
 	{
 		d_content = (t_dir_container *)cursor->content;
@@ -79,6 +80,7 @@ int	main(int ac, char **av)
 		{
 			ft_putendl("ft_ls: An error as occured, errno not used now sorry :P");
 		}
+		closedir(dir_stream);
 		cursor = cursor->next;
 		(cursor != NULL) ? ft_putchar('\n') : 0;
 	}
