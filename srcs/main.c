@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:06:12 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/08 02:29:34 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/08 05:43:22 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,13 @@ int	main(int ac, char **av)
 				else
 					end++;
 			}
-			render_files(d_content, flags);
+			render_files(cursor, d_content, flags);
+			closedir(dir_stream);
 		}
 		else
 		{
 			ft_putendl("ft_ls: An error as occured, errno not used now sorry :P");
 		}
-		closedir(dir_stream);
 		cursor = cursor->next;
 		(cursor != NULL) ? ft_putchar('\n') : 0;
 	}

@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/08 00:13:59 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/08 03:48:46 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/08 05:32:20 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void			ft_lstinsert(t_list *start, t_list *new);
 void			ft_lstsort(t_list *list, char rev);
 t_list			*init_flags(char *flags, t_list *list);
 void			sort_name(t_list *list, char rev);
-void			render_files(t_dir_container *dir_content, char *flags);
+void			render_files(t_list *dir, t_dir_container *dir_content, char *flags);
 void			ft_lstpushback(t_list *lst, t_list *new);
 int				ft_lstcount(t_list *lst);
 

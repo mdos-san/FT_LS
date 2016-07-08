@@ -6,11 +6,21 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:12:00 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/08 04:08:54 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/07/08 05:45:26 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+void		read_sym(char	*file)
+{
+	char	*new;
+
+	new = ft_strnew(1024);
+	(readlink(file, new, 1024) == -1) ? ft_putstr("error readlink") : 0 ;
+	ft_putstr(" -> ");
+	ft_putstr(new);
+}
 
 char		*print_col(char *str, char* max, int col)
 {
@@ -46,9 +56,9 @@ static void	render_l_flag(char *dir, t_file *file, char *flags, t_view v)
 	part = NULL;
 	if (flags[0] || file->name[0] != '.') 
 	{
+		(ft_strcmp(dir, "/") == 0) ? (path = ft_strjoin(dir, file->name)) : (part = ft_strjoin(dir, "/"));
 		(ft_strcmp(dir, "/") == 0) ? (path = ft_strjoin(dir, file->name)) : 0 ;
 		(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
-		(path == NULL) ? ft_putendl("coucou") : 0;
 		lstat(path, &f_stat);
 		(ret == -1) ? ft_putendl("error") : 0;
 		(S_ISDIR(f_stat.st_mode)) ? ft_putchar('d') : 0 ;
@@ -88,9 +98,23 @@ static void	render_l_flag(char *dir, t_file *file, char *flags, t_view v)
 		ft_putstr(date + 4);
 		date[16] = ' ';
 		ft_putchar(' ');
-		ft_putendl(file->name);
+		ft_putstr(file->name);
+		(S_ISLNK(f_stat.st_mode)) ? read_sym(path) : 0 ;
+		ft_putchar('\n');
 		part = NULL;
 	}
+}
+
+void	add_dir(t_list *lst, char *path, char *file)
+{
+	t_dir_container	dir;
+	t_list	*new;
+
+	dir.dir_name = ft_strdup(path);
+	dir.files = NULL;
+	new = ft_lstnew(&dir, sizeof(t_dir_container));
+	(lst->next != NULL) ? (new->next = lst->next) : (lst->next = new);
+	lst->next = new;
 }
 
 /*
@@ -99,7 +123,7 @@ static void	render_l_flag(char *dir, t_file *file, char *flags, t_view v)
  **
  */
 
-void	render_files(t_dir_container *dir_content, char *flags)
+void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 {
 	t_list	*files;
 	t_file	*file;
@@ -150,11 +174,27 @@ void	render_files(t_dir_container *dir_content, char *flags)
 	{
 		file = (t_file *)files->content;
 		if (flags[0] == 1 && (file->name[0] != '.' || flags[1]))
+		{
+			(ft_strcmp(dir_content->dir_name, "/") == 0) ? (path = ft_strjoin(dir_content->dir_name, file->name)) : (part = ft_strjoin(dir_content->dir_name, "/"));
+			(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
+			lstat(path, &f_stat);
+			if (flags[2])
+				(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name) : 0;
 			render_l_flag(dir_content->dir_name, file, flags, v);
+		}
 		else
 		{
+			(ft_strcmp(dir_content->dir_name, "/") == 0) ? (path = ft_strjoin(dir_content->dir_name, file->name)) : (part = ft_strjoin(dir_content->dir_name, "/"));
+			(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
+			lstat(path, &f_stat);
 			if (file->name[0] != '.' || flags[1])
+			{
+				if (flags[2])
+					(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name) : 0;
 				ft_putendl(file->name);
+			}
+			ft_strdel(&part);
+			ft_strdel(&path);
 		}
 		files = files->next;
 	}
