@@ -83,11 +83,11 @@ static void	render_l_flag(char *dir, t_file *file, char *flags, t_view v)
 		ft_putnbr((int)f_stat.st_nlink);
 		ft_putchar(' ');
 		f_pass = getpwuid(f_stat.st_uid);
-		(f_pass) ? ft_putstr(f_pass->pw_name) : 0;
+		(f_pass) ? ft_putstr(f_pass->pw_name) : ft_putnbr(f_stat.st_uid);
 		(f_pass) ? print_col(f_pass->pw_name, v.usr, 2) : 0;
 		ft_putstr("  ");
 		f_grp = getgrgid(f_stat.st_gid);
-		(f_grp) ? ft_putstr(f_grp->gr_name) :0;
+		(f_grp) ? ft_putstr(f_grp->gr_name) : ft_putnbr(f_stat.st_gid);
 		(f_grp) ? print_col(f_grp->gr_name, v.grp, 3) :0;
 		ft_putstr("  ");
 		print_col(ft_itoa(f_stat.st_size), v.size, 4);
