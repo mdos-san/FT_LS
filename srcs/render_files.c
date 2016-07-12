@@ -83,12 +83,12 @@ static void	render_l_flag(char *dir, t_file *file, char *flags, t_view v)
 		ft_putnbr((int)f_stat.st_nlink);
 		ft_putchar(' ');
 		f_pass = getpwuid(f_stat.st_uid);
-		ft_putstr(f_pass->pw_name);
-		print_col(f_pass->pw_name, v.usr, 2);
+		(f_pass) ? ft_putstr(f_pass->pw_name) : 0;
+		(f_pass) ? print_col(f_pass->pw_name, v.usr, 2) : 0;
 		ft_putstr("  ");
 		f_grp = getgrgid(f_stat.st_gid);
-		ft_putstr(f_grp->gr_name);
-		print_col(f_grp->gr_name, v.grp, 3);
+		(f_grp) ? ft_putstr(f_grp->gr_name) :0;
+		(f_grp) ? print_col(f_grp->gr_name, v.grp, 3) :0;
 		ft_putstr("  ");
 		print_col(ft_itoa(f_stat.st_size), v.size, 4);
 		ft_putnbr(f_stat.st_size);
@@ -176,8 +176,8 @@ void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 			f_pass = getpwuid(f_stat.st_uid);
 			f_grp = getgrgid(f_stat.st_gid);
 			(ft_atoi(v.link) < f_stat.st_nlink) ? (v.link = ft_itoa(f_stat.st_nlink)) : 0;
-			(ft_strlen(v.usr) < ft_strlen(f_pass->pw_name)) ? (v.usr = ft_strdup(f_pass->pw_name)) : 0;
-			(ft_strlen(v.grp) < ft_strlen(f_grp->gr_name)) ? (v.grp = ft_strdup(f_grp->gr_name)) : 0;
+			(f_pass && ft_strlen(v.usr) < ft_strlen(f_pass->pw_name)) ? (v.usr = ft_strdup(f_pass->pw_name)) : 0;
+			(f_grp && ft_strlen(v.grp) < ft_strlen(f_grp->gr_name)) ? (v.grp = ft_strdup(f_grp->gr_name)) : 0;
 			(ft_atoi(v.size) < f_stat.st_size) ? (v.size = ft_itoa(f_stat.st_size)) : 0;
 			ft_strdel(&path);
 			ft_strdel(&part);
