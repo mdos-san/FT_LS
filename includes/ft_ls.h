@@ -38,6 +38,7 @@ typedef struct	s_file
 {
 	char		*name;
 	int			type;
+	int			time;
 }				t_file;
 
 typedef struct	s_view
@@ -77,7 +78,7 @@ int				ft_lstcount(t_list *lst);
 t_astr			astr_create();
 void			astr_delete(t_astr *astr);
 void			astr_add_str(t_astr *astr, char *str, int free);
-void			sort_nametime(char *dir, t_list *list, char rev);
+void			sort_nametime(t_list *list, char rev);
 
 
 #endif

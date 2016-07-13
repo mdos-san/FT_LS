@@ -77,7 +77,6 @@ static void	render_l_flag(t_astr *astr, char *dir, t_file *file, char *flags, t_
 		(f_stat.st_mode & S_IROTH) ? astr_add_str(astr, "r", 0) : astr_add_str(astr, "-", 0);
 		(f_stat.st_mode & S_IWOTH) ? astr_add_str(astr, "w", 0) : astr_add_str(astr, "-", 0);
 		(f_stat.st_mode & S_IXOTH) ? astr_add_str(astr, "x", 0) : astr_add_str(astr, "-", 0);
-	//	ft_putstr("  ");
 		astr_add_str(astr, " ", 0);
 		print_col(astr, ft_itoa(f_stat.st_nlink), v.link, 1);
 		astr_add_str(astr, ft_itoa((int)f_stat.st_nlink), 1);
@@ -156,7 +155,6 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 	int				add_bool;
 
 	files = dir_content->files;
-	(flags[4]) ? sort_nametime(dir_content->dir_name, files, flags[3]) : sort_name(files, flags[3]);
 	total = 0;
 	v.link = 0;
 	v.usr = 0;
@@ -181,6 +179,7 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 			(ft_atoi(v.size) < f_stat.st_size) ? (v.size = ft_itoa(f_stat.st_size)) : 0;
 			ft_strdel(&path);
 			ft_strdel(&part);
+			file->time = (int)f_stat.st_ctime;
 			part = NULL;
 		}
 		files = files->next;
@@ -192,6 +191,7 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 		astr_add_str(astr, "\n", 0);
 	}
 	files = dir_content->files;
+	(flags[4]) ? sort_nametime(files, flags[3]) : sort_name(files, flags[3]);
 	while (files)
 	{
 		file = (t_file *)files->content;
