@@ -8,7 +8,10 @@ TMP_C=		main.c\
 			sort_name.c\
 			render_files.c\
 			ft_lstpushback.c\
-			ft_lstcount.c
+			ft_lstcount.c\
+			astr_create.c\
+			astr_delete.c\
+			astr_add_str.c
 
 SRC_C=		$(TMP_C:%=srcs/%)
 SRC_O=		$(TMP_C:.c=.o)

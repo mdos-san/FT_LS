@@ -26,6 +26,8 @@
 
 # include "libft.h"
 
+# define ASTR_BLOCK_SIZE 1024
+
 typedef struct	s_dir_container
 {
 	char		*dir_name;
@@ -56,6 +58,13 @@ typedef struct	s_date
 	int			sec;
 }				t_date;
 
+typedef struct	s_astr
+{
+	char		*str;
+	int			index;
+	int			nbr_block;
+}				t_astr;
+
 t_list			*load_parameters(int ac, char **av);
 void			ft_lstinsert(t_list *start, t_list *new);
 void			ft_lstsort(t_list *list, char rev);
@@ -64,5 +73,9 @@ void			sort_name(t_list *list, char rev);
 void			render_files(t_list *dir, t_dir_container *dir_content, char *flags);
 void			ft_lstpushback(t_list *lst, t_list *new);
 int				ft_lstcount(t_list *lst);
+t_astr			astr_create();
+void			astr_delete(t_astr *astr);
+void			astr_add_str(t_astr *astr, char *str, int free);
+
 
 #endif
