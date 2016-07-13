@@ -42,6 +42,7 @@ int	main(int ac, char **av)
 	t_file			file;
 	char			print_name;
 	char			*error;
+	struct stat		buf;
 
 	parameters = load_parameters(ac, av);
 	cursor = parameters;
@@ -54,15 +55,15 @@ int	main(int ac, char **av)
 	while (cursor != NULL)
 	{
 		d_content = (t_dir_container *)cursor->content;
-		if (print_name || (flags[2] && end == 1))
-		{
-			ft_putstr(d_content->dir_name);
-			ft_putendl(":");
-		}
-		end = 0;
 		dir_stream = opendir(d_content->dir_name);
 		if (dir_stream != NULL)
 		{
+			if (print_name || (flags[2] && end == 1))
+			{
+				ft_putstr(d_content->dir_name);
+				ft_putendl(":");
+			}
+			end = 0;
 			while (end == 0)
 			{
 				dir_entity = readdir(dir_stream);
@@ -81,9 +82,14 @@ int	main(int ac, char **av)
 		}
 		else
 		{
-			error = ft_strjoin("ft_ls: ", d_content->dir_name);
-			perror(error);
-			ft_strdel(&error);
+			if (lstat(d_content->dir_name, &buf) == -1)
+			{
+				error = ft_strjoin("ft_ls: ", d_content->dir_name);
+				perror(error);
+				ft_strdel(&error);
+			}
+			else
+				ft_putendl(d_content->dir_name);
 		}
 		cursor = cursor->next;
 		(cursor != NULL) ? ft_putchar('\n') : 0;

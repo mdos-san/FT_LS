@@ -199,7 +199,7 @@ void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 			(ft_strcmp(dir_content->dir_name, "/") == 0) ? (path = ft_strjoin(dir_content->dir_name, file->name)) : (part = ft_strjoin(dir_content->dir_name, "/"));
 			(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
 			lstat(path, &f_stat);
-			if (flags[2])
+			if (flags[2] && ft_strcmp(file->name, ".") != 0 && ft_strcmp(file->name, "..") != 0)
 				(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name, &add_bool) : 0;
 			render_l_flag(dir_content->dir_name, file, flags, v);
 		}
