@@ -18,6 +18,7 @@
 **	It return an address representing the new begining of the pile in case flags is first in pile
 **	(because flags is removed from the pile)
 */
+
 static t_list	*remove_flags(t_list *list)
 {
 	t_list	*cursor;
@@ -71,6 +72,8 @@ t_list	*init_flags(char *flags, t_list *list)
 				flags[2]++;
 			if (ft_strchr(value, (int)'r'))
 				flags[3]++;
+			if (ft_strchr(value, (int)'t'))
+				flags[4]++;
 		}
 		else
 			end++;	

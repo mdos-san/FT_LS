@@ -68,6 +68,7 @@ typedef struct	s_astr
 t_list			*load_parameters(int ac, char **av);
 void			ft_lstinsert(t_list *start, t_list *new);
 void			ft_lstsort(t_list *list, char rev);
+void			ft_lstsorttime(t_list *list, char rev);
 t_list			*init_flags(char *flags, t_list *list);
 void			sort_name(t_list *list, char rev);
 void			render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char *flags);
@@ -76,6 +77,7 @@ int				ft_lstcount(t_list *lst);
 t_astr			astr_create();
 void			astr_delete(t_astr *astr);
 void			astr_add_str(t_astr *astr, char *str, int free);
+void			sort_nametime(char *dir, t_list *list, char rev);
 
 
 #endif

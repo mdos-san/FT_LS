@@ -93,7 +93,7 @@ static void	render_l_flag(t_astr *astr, char *dir, t_file *file, char *flags, t_
 		print_col(astr, ft_itoa(f_stat.st_size), v.size, 1);
 		astr_add_str(astr, ft_itoa(f_stat.st_size), 1);
 		astr_add_str(astr, " ", 0);
-		date = ctime(&f_stat.st_atime);
+		date = ctime(&f_stat.st_ctime);
 		date[16] = '\0';
 		astr_add_str(astr, date + 4, 0);
 		date[16] = ' ';
@@ -156,7 +156,7 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 	int				add_bool;
 
 	files = dir_content->files;
-	sort_name(files, flags[3]);
+	(flags[4]) ? sort_nametime(dir_content->dir_name, files, flags[3]) : sort_name(files, flags[3]);
 	total = 0;
 	v.link = 0;
 	v.usr = 0;

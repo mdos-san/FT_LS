@@ -49,7 +49,7 @@ int	main(int ac, char **av)
 	parameters = load_parameters(ac, av);
 	cursor = parameters;
 	parameters = init_flags(flags, cursor);
-	ft_lstsort(parameters, flags[3]);
+	(flags[4]) ? ft_lstsorttime(parameters, flags[3]) : ft_lstsort(parameters, flags[3]);
 	(ft_lstcount(parameters) >= 2) ? (print_name = 1) : (print_name = 0);
 	(ft_lstcount(parameters) == 0) ? (parameters = load_parameters(0, av)) : 0 ;
 	cursor = parameters;
@@ -62,8 +62,6 @@ int	main(int ac, char **av)
 		{
 			if (print_name || (flags[2] && end == 1))
 			{
-//				ft_putstr(d_content->dir_name);
-//				ft_putendl(":");
 				astr_add_str(&astr, d_content->dir_name, 0);
 				astr_add_str(&astr, ":\n", 0);
 			}
