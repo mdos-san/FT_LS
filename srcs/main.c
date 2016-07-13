@@ -43,7 +43,9 @@ int	main(int ac, char **av)
 	char			print_name;
 	char			*error;
 	struct stat		buf;
+	t_astr			astr;
 
+	astr = astr_create();
 	parameters = load_parameters(ac, av);
 	cursor = parameters;
 	parameters = init_flags(flags, cursor);
@@ -60,8 +62,10 @@ int	main(int ac, char **av)
 		{
 			if (print_name || (flags[2] && end == 1))
 			{
-				ft_putstr(d_content->dir_name);
-				ft_putendl(":");
+//				ft_putstr(d_content->dir_name);
+//				ft_putendl(":");
+				astr_add_str(&astr, d_content->dir_name, 0);
+				astr_add_str(&astr, ":\n", 0);
 			}
 			end = 0;
 			while (end == 0)
@@ -77,7 +81,7 @@ int	main(int ac, char **av)
 				else
 					end++;
 			}
-			render_files(cursor, d_content, flags);
+			render_files(&astr, cursor, d_content, flags);
 			closedir(dir_stream);
 		}
 		else
@@ -89,10 +93,15 @@ int	main(int ac, char **av)
 				ft_strdel(&error);
 			}
 			else
-				ft_putendl(d_content->dir_name);
+			{
+				astr_add_str(&astr, d_content->dir_name, 0);
+				astr_add_str(&astr, "\n", 0);
+			}
 		}
 		cursor = cursor->next;
-		(cursor != NULL) ? ft_putchar('\n') : 0;
+		(cursor != NULL) ? astr_add_str(&astr, "\n", 0) : 0;
 	}
+	ft_putstr(astr.str);
+	astr_delete(&astr);
 	return (0);
 }

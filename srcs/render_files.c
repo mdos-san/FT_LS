@@ -142,7 +142,7 @@ static void	add_dir(t_list *lst, char *path, char *file, int	*b)
  **
  */
 
-void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
+void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char *flags)
 {
 	t_list	*files;
 	t_file	*file;
@@ -187,8 +187,11 @@ void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 	}
 	if (flags[0] && total > 0)
 	{
-		ft_putstr("total ");
-		ft_putendl(ft_itoa(total));
+//		ft_putstr("total ");
+//		ft_putendl(ft_itoa(total));
+		astr_add_str(astr, "total ", 0);
+		astr_add_str(astr, ft_itoa(total), 1);
+		astr_add_str(astr, "\n", 0);
 	}
 	files = dir_content->files;
 	while (files)
@@ -212,7 +215,9 @@ void	render_files(t_list *dir, t_dir_container *dir_content, char *flags)
 			{
 				if (flags[2])
 					(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name, &add_bool) : 0;
-				ft_putendl(file->name);
+				//ft_putendl(file->name);
+				astr_add_str(astr, file->name, 0);
+				astr_add_str(astr, "\n", 0);
 			}
 			ft_strdel(&part);
 			ft_strdel(&path);

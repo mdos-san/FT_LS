@@ -19,4 +19,5 @@ t_astr	astr_create()
 	astr.str = ft_strnew(ASTR_BLOCK_SIZE);
 	astr.index = 0;
 	astr.nbr_block = 1;
+	return (astr);
 }
