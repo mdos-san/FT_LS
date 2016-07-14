@@ -12,6 +12,14 @@
 
 #include "ft_ls.h"
 
+/*
+**
+**
+**	This function count the length of a t_list
+**
+**
+*/
+
 int	ft_lstcount(t_list *lst)
 {
 	t_list	*i;

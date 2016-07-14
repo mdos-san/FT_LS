@@ -28,11 +28,13 @@ static void	realloc_str(t_astr *astr, char *str, int index)
 	append_str(astr, str, index);
 }
 
-void	astr_add_str(t_astr *astr, char *str, int str_free)
+void		astr_add_str(t_astr *astr, char *str, int str_free)
 {
 	int	str_size;
 
 	str_size = ft_strlen(str);
-	(astr->index + str_size < astr->nbr_block * ASTR_BLOCK_SIZE) ? append_str(astr, str, str_size + astr->index) : realloc_str(astr, str, str_size + astr->index);
+	(astr->index + str_size < astr->nbr_block * ASTR_BLOCK_SIZE)
+	? append_str(astr, str, str_size + astr->index)
+	: realloc_str(astr, str, str_size + astr->index);
 	(str_free == 1) ? free(str) : 0 ;
 }

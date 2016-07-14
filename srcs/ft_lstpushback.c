@@ -12,6 +12,14 @@
 
 #include "ft_ls.h"
 
+/*
+**
+**
+**	This function add a new element of t_list at the end of the pile
+**
+**
+*/
+
 void	ft_lstpushback(t_list *lst, t_list *new)
 {
 	t_list	*cursor;

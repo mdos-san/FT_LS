@@ -27,25 +27,21 @@ t_list	*load_parameters(int ac, char **av)
 
 	nb = ac;
 	index = 2;
-	parameters = NULL;
 	container.files = NULL;
 	if (ac >= 2)
 	{
 		container.dir_name = ft_strdup(av[1]);
 		parameters = ft_lstnew(&container, sizeof(t_dir_container));
-		nb--;
-		while (nb != 1)
+		while (--nb != 1)
 		{
 			container.dir_name = ft_strdup(av[index]);
 			ft_lstpushback(parameters, ft_lstnew(&container, sizeof(t_dir_container)));
 			index++;
-			nb--;
 		}
 	}
 	else
 	{
 		container.dir_name = ft_strdup(".");
-		container.files = NULL;
 		parameters = ft_lstnew(&container, sizeof(t_dir_container));
 	}
 	return (parameters);
