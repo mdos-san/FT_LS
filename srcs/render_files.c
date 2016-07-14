@@ -136,10 +136,10 @@ static void	add_dir(t_list *lst, char *path, char *file, int	*b)
 }
 
 /*
- **
- **	This function have to render files of a dir and take care of flag
- **
- */
+**
+**	This function have to render files of a dir and take care of flag
+**
+*/
 
 void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char *flags)
 {
@@ -197,7 +197,9 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 		file = (t_file *)files->content;
 		if (flags[0] == 1 && (file->name[0] != '.' || flags[1]))
 		{
-			(ft_strcmp(dir_content->dir_name, "/") == 0) ? (path = ft_strjoin(dir_content->dir_name, file->name)) : (part = ft_strjoin(dir_content->dir_name, "/"));
+			(ft_strcmp(dir_content->dir_name, "/") == 0)
+			? (path = ft_strjoin(dir_content->dir_name, file->name))
+			: (part = ft_strjoin(dir_content->dir_name, "/"));
 			(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
 			lstat(path, &f_stat);
 			if (flags[2] && ft_strcmp(file->name, ".") != 0 && ft_strcmp(file->name, "..") != 0)
@@ -206,7 +208,9 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 		}
 		else
 		{
-			(ft_strcmp(dir_content->dir_name, "/") == 0) ? (path = ft_strjoin(dir_content->dir_name, file->name)) : (part = ft_strjoin(dir_content->dir_name, "/"));
+			(ft_strcmp(dir_content->dir_name, "/") == 0)
+			? (path = ft_strjoin(dir_content->dir_name, file->name))
+			: (part = ft_strjoin(dir_content->dir_name, "/"));
 			(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
 			lstat(path, &f_stat);
 			if (file->name[0] != '.' || flags[1])
