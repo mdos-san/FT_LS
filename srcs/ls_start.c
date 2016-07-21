@@ -1,5 +1,34 @@
 #include "ft_ls.h"
 
+static void	ls_read(t_ls *ls)
+{
+	ls->end = 0;
+	while (ls->end == 0)
+	{
+		ls->dir_entity = readdir(ls->dir_stream);
+		if (ls->dir_entity != NULL)
+		{
+			ls->file.name = ft_strdup(ls->dir_entity->d_name);
+			ls->file.type = 0;
+			ls->tmp = ft_lstnew(&ls->file, sizeof(t_file));
+			(ls->d_content->files == NULL)
+			? (ls->d_content->files = ls->tmp)
+			: ft_lstpushback(ls->d_content->files, ls->tmp);
+		}
+		else
+			ls->end++;
+	}
+	render_files(&ls->astr, ls->cursor, ls->d_content, ls->flags);
+	closedir(ls->dir_stream);
+}
+
+static void	ls_error(t_ls *ls)
+{
+	ls->error = ft_strjoin("ft_ls: ", ls->d_content->dir_name);
+	perror(ls->error);
+	ft_strdel(&ls->error);
+}
+
 void	ls_start(t_ls *ls)
 {
 	while (ls->cursor != NULL)
@@ -13,36 +42,13 @@ void	ls_start(t_ls *ls)
 				astr_add_str(&ls->astr, ls->d_content->dir_name, 0);
 				astr_add_str(&ls->astr, ":\n", 0);
 			}
-			ls->end = 0;
-			while (ls->end == 0)
-			{
-				ls->dir_entity = readdir(ls->dir_stream);
-				if (ls->dir_entity != NULL)
-				{
-					ls->file.name = ft_strdup(ls->dir_entity->d_name);
-					ls->file.type = 0;
-					ls->tmp = ft_lstnew(&ls->file, sizeof(t_file));
-					(ls->d_content->files == NULL) ? (ls->d_content->files = ls->tmp) : ft_lstpushback(ls->d_content->files, ls->tmp);
-				}
-				else
-					ls->end++;
-			}
-			render_files(&ls->astr, ls->cursor, ls->d_content, ls->flags);
-			closedir(ls->dir_stream);
+			ls_read(ls);
 		}
 		else
 		{
-			if (lstat(ls->d_content->dir_name, &ls->buf) == -1)
-			{
-				ls->error = ft_strjoin("ft_ls: ", ls->d_content->dir_name);
-				perror(ls->error);
-				ft_strdel(&ls->error);
-			}
-			else
-			{
-				astr_add_str(&ls->astr, ls->d_content->dir_name, 0);
-				astr_add_str(&ls->astr, "\n", 0);
-			}
+			(lstat(ls->d_content->dir_name, &ls->buf) == -1)
+			? ls_error(ls)
+			: astr_add_strl(&ls->astr, ls->d_content->dir_name, 0);
 		}
 		ls->cursor = ls->cursor->next;
 		(ls->cursor != NULL) ? astr_add_str(&ls->astr, "\n", 0) : 0;

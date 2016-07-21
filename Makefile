@@ -13,7 +13,8 @@ TMP_C=		main.c\
 			ft_lstcount.c\
 			astr_create.c\
 			astr_delete.c\
-			astr_add_str.c
+			astr_add_str.c\
+			astr_add_strl.c
 
 SRC_C=		$(TMP_C:%=srcs/%)
 SRC_O=		$(TMP_C:.c=.o)
