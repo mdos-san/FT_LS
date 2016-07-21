@@ -145,13 +145,9 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 {
 	t_list			*files;
 	t_file			*file;
-	struct stat		f_stat;
 	int				total;
 	t_view			v;
-	char			*path;
 	char			*part;
-	struct passwd	*f_pass;
-	struct group	*f_grp;
 	int				add_bool;
 
 	files = dir_content->files;
@@ -167,19 +163,24 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 		file = (t_file *)files->content;
 		if (file->name[0] != '.' || flags[1])
 		{
-			(ft_strcmp(dir_content->dir_name, "/") == 0) ? (path = ft_strjoin(dir_content->dir_name, file->name)) : (part = ft_strjoin(dir_content->dir_name, "/"));
-			(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
-			lstat(path, &f_stat);
-			total += f_stat.st_blocks;
-			f_pass = getpwuid(f_stat.st_uid);
-			f_grp = getgrgid(f_stat.st_gid);
-			(ft_atoi(v.link) < f_stat.st_nlink) ? (v.link = ft_itoa(f_stat.st_nlink)) : 0;
-			(f_pass && ft_strlen(v.usr) < ft_strlen(f_pass->pw_name)) ? (v.usr = ft_strdup(f_pass->pw_name)) : 0;
-			(f_grp && ft_strlen(v.grp) < ft_strlen(f_grp->gr_name)) ? (v.grp = ft_strdup(f_grp->gr_name)) : 0;
-			(ft_atoi(v.size) < f_stat.st_size) ? (v.size = ft_itoa(f_stat.st_size)) : 0;
-			ft_strdel(&path);
+			(ft_strcmp(dir_content->dir_name, "/") == 0)
+			? (file->path = ft_strjoin(dir_content->dir_name, file->name))
+			: (part = ft_strjoin(dir_content->dir_name, "/"));
+			(part != NULL) ? (file->path = ft_strjoin(part, file->name)) : 0;
+			lstat(file->path, &file->stat);
+			total += file->stat.st_blocks;
+			file->uid = getpwuid(file->stat.st_uid);
+			file->gid = getgrgid(file->stat.st_gid);
+			(ft_atoi(v.link) < file->stat.st_nlink)
+			? (v.link = ft_itoa(file->stat.st_nlink)) : 0;
+			(file->uid && ft_strlen(v.usr) < ft_strlen(file->uid->pw_name))
+			? (v.usr = ft_strdup(file->uid->pw_name)) : 0;
+			(file->gid && ft_strlen(v.grp) < ft_strlen(file->gid->gr_name))
+			? (v.grp = ft_strdup(file->gid->gr_name)) : 0;
+			(ft_atoi(v.size) < file->stat.st_size)
+			? (v.size = ft_itoa(file->stat.st_size)) : 0;
 			ft_strdel(&part);
-			file->time = (int)f_stat.st_ctime;
+			file->time = (int)file->stat.st_ctime;
 			part = NULL;
 		}
 		files = files->next;
@@ -187,8 +188,7 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 	if (flags[0] && total > 0)
 	{
 		astr_add_str(astr, "total ", 0);
-		astr_add_str(astr, ft_itoa(total), 1);
-		astr_add_str(astr, "\n", 0);
+		astr_add_strl(astr, ft_itoa(total), 1);
 	}
 	files = dir_content->files;
 	(flags[4]) ? sort_nametime(files, flags[3]) : sort_name(files, flags[3]);
@@ -197,31 +197,18 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 		file = (t_file *)files->content;
 		if (flags[0] == 1 && (file->name[0] != '.' || flags[1]))
 		{
-			(ft_strcmp(dir_content->dir_name, "/") == 0)
-			? (path = ft_strjoin(dir_content->dir_name, file->name))
-			: (part = ft_strjoin(dir_content->dir_name, "/"));
-			(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
-			lstat(path, &f_stat);
 			if (flags[2] && ft_strcmp(file->name, ".") != 0 && ft_strcmp(file->name, "..") != 0)
-				(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name, &add_bool) : 0;
+				(S_ISDIR(file->stat.st_mode)) ? add_dir(dir, file->path, file->name, &add_bool) : 0;
 			render_l_flag(astr, dir_content->dir_name, file, flags, v);
 		}
 		else
 		{
-			(ft_strcmp(dir_content->dir_name, "/") == 0)
-			? (path = ft_strjoin(dir_content->dir_name, file->name))
-			: (part = ft_strjoin(dir_content->dir_name, "/"));
-			(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
-			lstat(path, &f_stat);
 			if (file->name[0] != '.' || flags[1])
 			{
 				if (flags[2])
-					(S_ISDIR(f_stat.st_mode)) ? add_dir(dir, path, file->name, &add_bool) : 0;
-				astr_add_str(astr, file->name, 0);
-				astr_add_str(astr, "\n", 0);
+					(S_ISDIR(file->stat.st_mode)) ? add_dir(dir, file->path, file->name, &add_bool) : 0;
+				astr_add_strl(astr, file->name, 0);
 			}
-			ft_strdel(&part);
-			ft_strdel(&path);
 		}
 		files = files->next;
 	}

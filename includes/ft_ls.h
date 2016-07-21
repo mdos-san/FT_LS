@@ -36,9 +36,14 @@ typedef struct	s_dir_container
 
 typedef struct	s_file
 {
-	char		*name;
-	int			type;
-	int			time;
+	char			*name;
+	char			*path;
+	int				type;
+	int				time;
+	struct stat		stat;
+	struct passwd	*uid;
+	struct group	*gid;
+
 }				t_file;
 
 typedef struct	s_view
