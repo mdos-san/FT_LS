@@ -104,7 +104,7 @@ static void	render_l_flag(t_astr *astr, char *dir, t_file *file, char *flags, t_
 	}
 }
 
-static void	add_dir(t_list *lst, char *path, char *file, int	*b)
+static void	add_dir(t_list *lst, char *path, char *file, int *b)
 {
 	t_dir_container	dir;
 	t_list	*new;
@@ -136,10 +136,35 @@ static void	add_dir(t_list *lst, char *path, char *file, int	*b)
 }
 
 /*
-**
-**	This function have to render files of a dir and take care of flag
-**
-*/
+ **
+ **	This function have to render files of a dir and take care of flag
+ **
+ */
+
+static void file_init(t_file *file, t_dir_container *dir_content, t_view *v, int *total)
+{
+	char			*part;
+
+	part = NULL;
+	(ft_strcmp(dir_content->dir_name, "/") == 0)
+		? (file->path = ft_strjoin(dir_content->dir_name, file->name))
+		: (part = ft_strjoin(dir_content->dir_name, "/"));
+	(part != NULL) ? (file->path = ft_strjoin(part, file->name)) : 0;
+	lstat(file->path, &file->stat);
+	*total += file->stat.st_blocks;
+	file->uid = getpwuid(file->stat.st_uid);
+	file->gid = getgrgid(file->stat.st_gid);
+	(ft_atoi(v->link) < file->stat.st_nlink)
+		? (v->link = ft_itoa(file->stat.st_nlink)) : 0;
+	(file->uid && ft_strlen(v->usr) < ft_strlen(file->uid->pw_name))
+		? (v->usr = ft_strdup(file->uid->pw_name)) : 0;
+	(file->gid && ft_strlen(v->grp) < ft_strlen(file->gid->gr_name))
+		? (v->grp = ft_strdup(file->gid->gr_name)) : 0;
+	(ft_atoi(v->size) < file->stat.st_size)
+		? (v->size = ft_itoa(file->stat.st_size)) : 0;
+	ft_strdel(&part);
+	file->time = (int)file->stat.st_ctime;
+}
 
 void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char *flags)
 {
@@ -147,7 +172,6 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 	t_file			*file;
 	int				total;
 	t_view			v;
-	char			*part;
 	int				add_bool;
 
 	files = dir_content->files;
@@ -156,33 +180,11 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 	v.usr = 0;
 	v.grp = 0;
 	v.size = 0;
-	part = NULL;
 	add_bool = 0;
 	while (files)
 	{
 		file = (t_file *)files->content;
-		if (file->name[0] != '.' || flags[1])
-		{
-			(ft_strcmp(dir_content->dir_name, "/") == 0)
-			? (file->path = ft_strjoin(dir_content->dir_name, file->name))
-			: (part = ft_strjoin(dir_content->dir_name, "/"));
-			(part != NULL) ? (file->path = ft_strjoin(part, file->name)) : 0;
-			lstat(file->path, &file->stat);
-			total += file->stat.st_blocks;
-			file->uid = getpwuid(file->stat.st_uid);
-			file->gid = getgrgid(file->stat.st_gid);
-			(ft_atoi(v.link) < file->stat.st_nlink)
-			? (v.link = ft_itoa(file->stat.st_nlink)) : 0;
-			(file->uid && ft_strlen(v.usr) < ft_strlen(file->uid->pw_name))
-			? (v.usr = ft_strdup(file->uid->pw_name)) : 0;
-			(file->gid && ft_strlen(v.grp) < ft_strlen(file->gid->gr_name))
-			? (v.grp = ft_strdup(file->gid->gr_name)) : 0;
-			(ft_atoi(v.size) < file->stat.st_size)
-			? (v.size = ft_itoa(file->stat.st_size)) : 0;
-			ft_strdel(&part);
-			file->time = (int)file->stat.st_ctime;
-			part = NULL;
-		}
+		(file->name[0] != '.' || flags[1]) ? file_init(file, dir_content, &v, &total) : 0;
 		files = files->next;
 	}
 	if (flags[0] && total > 0)
