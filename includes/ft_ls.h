@@ -28,19 +28,6 @@
 
 # define ASTR_BLOCK_SIZE 501200
 
-typedef struct	s_dir_container
-{
-	char		*dir_name;
-	t_list		*files;
-}				t_dir_container;
-
-typedef struct	s_file
-{
-	char		*name;
-	int			type;
-	int			time;
-}				t_file;
-
 typedef struct	s_view
 {
 	char*		link;
@@ -48,6 +35,25 @@ typedef struct	s_view
 	char		*grp;
 	char*		size;
 }				t_view;
+
+typedef struct	s_dir_container
+{
+	char		*dir_name;
+	t_list		*files;
+	t_view		v;
+}				t_dir_container;
+
+typedef struct	s_file
+{
+	char			*name;
+	char			*path;
+	int				type;
+	int				time;
+	struct stat		stat;
+	struct passwd	*uid;
+	struct group	*gid;
+
+}				t_file;
 
 typedef struct	s_date
 {
@@ -66,6 +72,27 @@ typedef struct	s_astr
 	int			nbr_block;
 }				t_astr;
 
+typedef struct	s_ls
+{
+	DIR				*dir_stream;
+	struct dirent	*dir_entity;
+	char			end;
+	t_list			*parameters;
+	t_list			*cursor;
+	char			*part_path;
+	char			*full_path;
+	char			flags[5];
+	t_dir_container	*d_content;
+	t_list			*tmp;
+	t_file			file;
+	char			print_name;
+	char			*error;
+	struct stat		buf;
+	t_astr			astr;
+}				t_ls;
+
+t_ls			ls_init(int ac, char **av);
+void			ls_start(t_ls *ls);
 t_list			*load_parameters(int ac, char **av);
 void			ft_lstinsert(t_list *start, t_list *new);
 void			ft_lstsort(t_list *list, char rev);
@@ -79,6 +106,7 @@ t_astr			astr_create();
 void			astr_delete(t_astr *astr);
 void			astr_add_str(t_astr *astr, char *str, int free);
 void			sort_nametime(t_list *list, char rev);
+void			render_l_flag(t_astr *astr, char *dir, t_file *file, char *flags, t_view v);
 
 
 #endif

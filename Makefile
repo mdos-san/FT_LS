@@ -1,17 +1,21 @@
 NAME=		ft_ls
 
 TMP_C=		main.c\
+			ls_init.c\
+			ls_start.c\
 			load_parameters.c\
 			ft_lstinsert.c\
 			ft_lstsort.c\
 			init_flags.c\
 			sort_name.c\
 			render_files.c\
+			render_l_flag.c\
 			ft_lstpushback.c\
 			ft_lstcount.c\
 			astr_create.c\
 			astr_delete.c\
-			astr_add_str.c
+			astr_add_str.c\
+			astr_add_strl.c
 
 SRC_C=		$(TMP_C:%=srcs/%)
 SRC_O=		$(TMP_C:.c=.o)
