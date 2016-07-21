@@ -42,65 +42,57 @@ char		*print_col(t_astr *astr, char *str, char* max, int col)
  **	This fucntion render the l flag
  */
 
+static void get_right(t_file *file, t_astr *astr, t_view v)
+{
+	(S_ISDIR(file->stat.st_mode)) ? astr_add_str(astr, "d", 0) : 0 ;
+	(S_ISREG(file->stat.st_mode)) ? astr_add_str(astr, "-", 0) : 0 ;
+	(S_ISSOCK(file->stat.st_mode)) ? astr_add_str(astr, "s", 0) : 0 ;
+	(S_ISFIFO(file->stat.st_mode)) ? astr_add_str(astr, "p", 0) : 0 ;
+	(S_ISCHR(file->stat.st_mode)) ? astr_add_str(astr, "c", 0) : 0 ;
+	(S_ISCHR(file->stat.st_mode)) ? astr_add_str(astr, "c", 0) : 0 ;
+	(S_ISBLK(file->stat.st_mode)) ? astr_add_str(astr, "b", 0) : 0 ;
+	(S_ISLNK(file->stat.st_mode)) ? astr_add_str(astr, "l", 0) : 0 ;
+	(file->stat.st_mode & S_IRUSR) ? astr_add_str(astr, "r", 0) : astr_add_str(astr, "-", 0);
+	(file->stat.st_mode & S_IWUSR) ? astr_add_str(astr, "w", 0) : astr_add_str(astr, "-", 0);
+	(file->stat.st_mode & S_IXUSR) ? astr_add_str(astr, "x", 0) : astr_add_str(astr, "-", 0);
+	(file->stat.st_mode & S_IRGRP) ? astr_add_str(astr, "r", 0) : astr_add_str(astr, "-", 0);
+	(file->stat.st_mode & S_IWGRP) ? astr_add_str(astr, "w", 0) : astr_add_str(astr, "-", 0);
+	(file->stat.st_mode & S_IXGRP) ? astr_add_str(astr, "x", 0) : astr_add_str(astr, "-", 0);
+	(file->stat.st_mode & S_IROTH) ? astr_add_str(astr, "r", 0) : astr_add_str(astr, "-", 0);
+	(file->stat.st_mode & S_IWOTH) ? astr_add_str(astr, "w", 0) : astr_add_str(astr, "-", 0);
+	(file->stat.st_mode & S_IXOTH) ? astr_add_str(astr, "x", 0) : astr_add_str(astr, "-", 0);
+	astr_add_str(astr, " ", 0);
+	print_col(astr, ft_itoa(file->stat.st_nlink), v.link, 1);
+	astr_add_str(astr, ft_itoa((int)file->stat.st_nlink), 1);
+	astr_add_str(astr, " ", 0);
+}
+
 static void	render_l_flag(t_astr *astr, char *dir, t_file *file, char *flags, t_view v)
 {
-	struct stat		f_stat;
-	struct passwd	*f_pass;
-	struct group	*f_grp;
 	char			*date;
 	char			*nb;
-	char			*path;
-	char			*part;
 	char			*col;
 
-	part = NULL;
 	if (flags[0] || file->name[0] != '.') 
 	{
-		(ft_strcmp(dir, "/") == 0) ? (path = ft_strjoin(dir, file->name)) : (part = ft_strjoin(dir, "/"));
-		(ft_strcmp(dir, "/") == 0) ? (path = ft_strjoin(dir, file->name)) : 0 ;
-		(part != NULL) ? (path = ft_strjoin(part, file->name)) : 0;
-		lstat(path, &f_stat);
-		(S_ISDIR(f_stat.st_mode)) ? astr_add_str(astr, "d", 0) : 0 ;
-		(S_ISREG(f_stat.st_mode)) ? astr_add_str(astr, "-", 0) : 0 ;
-		(S_ISSOCK(f_stat.st_mode)) ? astr_add_str(astr, "s", 0) : 0 ;
-		(S_ISFIFO(f_stat.st_mode)) ? astr_add_str(astr, "p", 0) : 0 ;
-		(S_ISCHR(f_stat.st_mode)) ? astr_add_str(astr, "c", 0) : 0 ;
-		(S_ISCHR(f_stat.st_mode)) ? astr_add_str(astr, "c", 0) : 0 ;
-		(S_ISBLK(f_stat.st_mode)) ? astr_add_str(astr, "b", 0) : 0 ;
-		(S_ISLNK(f_stat.st_mode)) ? astr_add_str(astr, "l", 0) : 0 ;
-		(f_stat.st_mode & S_IRUSR) ? astr_add_str(astr, "r", 0) : astr_add_str(astr, "-", 0);
-		(f_stat.st_mode & S_IWUSR) ? astr_add_str(astr, "w", 0) : astr_add_str(astr, "-", 0);
-		(f_stat.st_mode & S_IXUSR) ? astr_add_str(astr, "x", 0) : astr_add_str(astr, "-", 0);
-		(f_stat.st_mode & S_IRGRP) ? astr_add_str(astr, "r", 0) : astr_add_str(astr, "-", 0);
-		(f_stat.st_mode & S_IWGRP) ? astr_add_str(astr, "w", 0) : astr_add_str(astr, "-", 0);
-		(f_stat.st_mode & S_IXGRP) ? astr_add_str(astr, "x", 0) : astr_add_str(astr, "-", 0);
-		(f_stat.st_mode & S_IROTH) ? astr_add_str(astr, "r", 0) : astr_add_str(astr, "-", 0);
-		(f_stat.st_mode & S_IWOTH) ? astr_add_str(astr, "w", 0) : astr_add_str(astr, "-", 0);
-		(f_stat.st_mode & S_IXOTH) ? astr_add_str(astr, "x", 0) : astr_add_str(astr, "-", 0);
-		astr_add_str(astr, " ", 0);
-		print_col(astr, ft_itoa(f_stat.st_nlink), v.link, 1);
-		astr_add_str(astr, ft_itoa((int)f_stat.st_nlink), 1);
-		astr_add_str(astr, " ", 0);
-		f_pass = getpwuid(f_stat.st_uid);
-		(f_pass) ? astr_add_str(astr, f_pass->pw_name, 0) : astr_add_str(astr, ft_itoa(f_stat.st_uid), 1);
-		(f_pass) ? print_col(astr, f_pass->pw_name, v.usr, 0) : 0;
+		get_right(file, astr, v);
+		(file->uid) ? astr_add_str(astr, file->uid->pw_name, 0) : astr_add_str(astr, ft_itoa(file->stat.st_uid), 1);
+		(file->uid) ? print_col(astr, file->uid->pw_name, v.usr, 0) : 0;
 		astr_add_str(astr, "  ", 0);
-		f_grp = getgrgid(f_stat.st_gid);
-		(f_grp) ? astr_add_str(astr, f_grp->gr_name, 0) : astr_add_str(astr, ft_itoa(f_stat.st_gid), 1);
-		(f_grp) ? print_col(astr, f_grp->gr_name, v.grp, 0) :0;
+		(file->gid) ? astr_add_str(astr, file->gid->gr_name, 0) : astr_add_str(astr, ft_itoa(file->stat.st_gid), 1);
+		(file->gid) ? print_col(astr, file->gid->gr_name, v.grp, 0) :0;
 		astr_add_str(astr, "  ", 0);
-		print_col(astr, ft_itoa(f_stat.st_size), v.size, 1);
-		astr_add_str(astr, ft_itoa(f_stat.st_size), 1);
+		print_col(astr, ft_itoa(file->stat.st_size), v.size, 1);
+		astr_add_str(astr, ft_itoa(file->stat.st_size), 1);
 		astr_add_str(astr, " ", 0);
-		date = ctime(&f_stat.st_ctime);
+		date = ctime(&file->stat.st_ctime);
 		date[16] = '\0';
 		astr_add_str(astr, date + 4, 0);
 		date[16] = ' ';
 		astr_add_str(astr, " ", 0);
 		astr_add_str(astr, file->name, 0);
-		(S_ISLNK(f_stat.st_mode)) ? read_sym(astr, path) : 0 ;
+		(S_ISLNK(file->stat.st_mode)) ? read_sym(astr, file->path) : 0 ;
 		astr_add_str(astr, "\n", 0);
-		part = NULL;
 	}
 }
 
@@ -111,7 +103,7 @@ static void	add_dir(t_list *lst, char *path, char *file, int *b)
 	t_list	*cur;
 	int		i;
 
-	i = 0;
+	i = -1;
 	dir.dir_name = ft_strdup(path);
 	dir.files = NULL;
 	cur = lst;
@@ -124,11 +116,8 @@ static void	add_dir(t_list *lst, char *path, char *file, int *b)
 	}
 	else
 	{
-		while (i < *b)
-		{
+		while (++i < *b)
 			cur = cur->next;
-			i++;
-		}
 		(cur->next != NULL) ? (new->next = cur->next) : (cur->next = new);
 		cur->next = new;
 		*b += 1;
