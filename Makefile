@@ -1,6 +1,8 @@
 NAME=		ft_ls
 
 TMP_C=		main.c\
+			ls_init.c\
+			ls_start.c\
 			load_parameters.c\
 			ft_lstinsert.c\
 			ft_lstsort.c\
