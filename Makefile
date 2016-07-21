@@ -9,6 +9,7 @@ TMP_C=		main.c\
 			init_flags.c\
 			sort_name.c\
 			render_files.c\
+			render_l_flag.c\
 			ft_lstpushback.c\
 			ft_lstcount.c\
 			astr_create.c\

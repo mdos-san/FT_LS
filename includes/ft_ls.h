@@ -106,6 +106,7 @@ t_astr			astr_create();
 void			astr_delete(t_astr *astr);
 void			astr_add_str(t_astr *astr, char *str, int free);
 void			sort_nametime(t_list *list, char rev);
+void			render_l_flag(t_astr *astr, char *dir, t_file *file, char *flags, t_view v);
 
 
 #endif
