@@ -28,10 +28,19 @@
 
 # define ASTR_BLOCK_SIZE 501200
 
+typedef struct	s_view
+{
+	char*		link;
+	char		*usr;
+	char		*grp;
+	char*		size;
+}				t_view;
+
 typedef struct	s_dir_container
 {
 	char		*dir_name;
 	t_list		*files;
+	t_view		v;
 }				t_dir_container;
 
 typedef struct	s_file
@@ -45,14 +54,6 @@ typedef struct	s_file
 	struct group	*gid;
 
 }				t_file;
-
-typedef struct	s_view
-{
-	char*		link;
-	char		*usr;
-	char		*grp;
-	char*		size;
-}				t_view;
 
 typedef struct	s_date
 {

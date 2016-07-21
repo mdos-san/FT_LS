@@ -166,25 +166,50 @@ static void file_init(t_file *file, t_dir_container *dir_content, t_view *v, int
 	file->time = (int)file->stat.st_ctime;
 }
 
+static void	render_loop(t_astr *astr, t_list *dir, t_dir_container *dir_content, char *flags)
+{
+	t_list	*files;
+	t_file	*file;
+	int		add_bool;
+
+	add_bool = 0;
+	files = dir_content->files;
+	while (files)
+	{
+		file = (t_file *)files->content;
+		if (flags[0] == 1 && (file->name[0] != '.' || flags[1]))
+		{
+			if (flags[2] && ft_strcmp(file->name, ".") != 0 && ft_strcmp(file->name, "..") != 0)
+				(S_ISDIR(file->stat.st_mode)) ? add_dir(dir, file->path, file->name, &add_bool) : 0;
+			render_l_flag(astr, dir_content->dir_name, file, flags, dir_content->v);
+		}
+		else if (file->name[0] != '.' || flags[1])
+		{
+			if (flags[2])
+				(S_ISDIR(file->stat.st_mode)) ? add_dir(dir, file->path, file->name, &add_bool) : 0;
+			astr_add_strl(astr, file->name, 0);
+		}
+		files = files->next;
+	}
+}
+
 void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char *flags)
 {
 	t_list			*files;
 	t_file			*file;
 	int				total;
-	t_view			v;
-	int				add_bool;
 
 	files = dir_content->files;
 	total = 0;
-	v.link = 0;
-	v.usr = 0;
-	v.grp = 0;
-	v.size = 0;
-	add_bool = 0;
+	dir_content->v.link = 0;
+	dir_content->v.usr = 0;
+	dir_content->v.grp = 0;
+	dir_content->v.size = 0;
 	while (files)
 	{
 		file = (t_file *)files->content;
-		(file->name[0] != '.' || flags[1]) ? file_init(file, dir_content, &v, &total) : 0;
+		(file->name[0] != '.' || flags[1])
+			? file_init(file, dir_content, &dir_content->v, &total)	: 0;
 		files = files->next;
 	}
 	if (flags[0] && total > 0)
@@ -194,24 +219,5 @@ void	render_files(t_astr *astr, t_list *dir, t_dir_container *dir_content, char 
 	}
 	files = dir_content->files;
 	(flags[4]) ? sort_nametime(files, flags[3]) : sort_name(files, flags[3]);
-	while (files)
-	{
-		file = (t_file *)files->content;
-		if (flags[0] == 1 && (file->name[0] != '.' || flags[1]))
-		{
-			if (flags[2] && ft_strcmp(file->name, ".") != 0 && ft_strcmp(file->name, "..") != 0)
-				(S_ISDIR(file->stat.st_mode)) ? add_dir(dir, file->path, file->name, &add_bool) : 0;
-			render_l_flag(astr, dir_content->dir_name, file, flags, v);
-		}
-		else
-		{
-			if (file->name[0] != '.' || flags[1])
-			{
-				if (flags[2])
-					(S_ISDIR(file->stat.st_mode)) ? add_dir(dir, file->path, file->name, &add_bool) : 0;
-				astr_add_strl(astr, file->name, 0);
-			}
-		}
-		files = files->next;
-	}
+	render_loop(astr, dir, dir_content, flags);
 }
