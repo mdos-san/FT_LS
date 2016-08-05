@@ -48,10 +48,11 @@ void	ls_start(t_ls *ls)
 		{
 			(lstat(ls->d_content->dir_name, &ls->buf) == -1)
 			? ls_error(ls)
-			: astr_add_strl(&ls->astr, ls->d_content->dir_name, 0);
+			: astr_add_strl(&ls->file_astr, ls->d_content->dir_name, 0);
 		}
 		ls->cursor = ls->cursor->next;
 		(ls->cursor != NULL) ? astr_add_str(&ls->astr, "\n", 0) : 0;
 	}
+	(ft_strcmp(ls->file_astr.str, "") != 0) ? ft_putendl(ls->file_astr.str) : 0;
 	ft_putstr(ls->astr.str);
 }

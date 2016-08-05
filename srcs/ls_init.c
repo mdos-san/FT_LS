@@ -5,6 +5,7 @@ t_ls	ls_init(int ac, char **av)
 	t_ls	ls;
 
 	ls.astr = astr_create();
+	ls.file_astr = astr_create();
 	ls.parameters = load_parameters(ac, av);
 	ls.cursor = ls.parameters;
 	ls.parameters = init_flags(ls.flags, ls.cursor);

@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:06:12 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/08 07:24:02 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/08/05 06:56:58 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int ac, char **av)
 
 	ls = ls_init(ac, av);
 	ls_start(&ls);
+	astr_delete(&ls.file_astr);
 	astr_delete(&ls.astr);
 	return (0);
 }
