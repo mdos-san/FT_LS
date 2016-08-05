@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/08 00:13:59 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/08/05 06:56:00 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/08/05 07:13:46 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 
 typedef struct	s_view
 {
-	char*		link;
+	char		*link;
 	char		*usr;
 	char		*grp;
-	char*		size;
+	char		*size;
 }				t_view;
 
 typedef struct	s_dir_container

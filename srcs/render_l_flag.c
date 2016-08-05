@@ -50,7 +50,7 @@ static void get_right(t_file *file, t_astr *astr, t_view v)
 	(file->stat.st_mode & S_IROTH) ? astr_add_str(astr, "r", 0) : astr_add_str(astr, "-", 0);
 	(file->stat.st_mode & S_IWOTH) ? astr_add_str(astr, "w", 0) : astr_add_str(astr, "-", 0);
 	(file->stat.st_mode & S_IXOTH) ? astr_add_str(astr, "x", 0) : astr_add_str(astr, "-", 0);
-	astr_add_str(astr, " ", 0);
+	astr_add_str(astr, "  ", 0);
 	print_col(astr, ft_itoa(file->stat.st_nlink), v.link, 1);
 	astr_add_str(astr, ft_itoa((int)file->stat.st_nlink), 1);
 	astr_add_str(astr, " ", 0);

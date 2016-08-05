@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:12:00 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/08 06:59:34 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/08/05 07:43:41 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,13 @@ static void	add_dir(t_list *lst, char *path, char *file, int *b)
  **
  */
 
+static void reassign_value(char **addr, char *str, char free_str)
+{
+	(ft_strcmp(*addr, "") != 0) ? ft_strdel(addr) : 0;
+	*addr = ft_strdup(str); 
+	(free_str == 1) ? ft_strdel(&str) : 0;
+}
+
 static void file_init(t_file *file, t_dir_container *dir_content, t_view *v, int *total)
 {
 	char			*part;
@@ -62,13 +69,13 @@ static void file_init(t_file *file, t_dir_container *dir_content, t_view *v, int
 	file->uid = getpwuid(file->stat.st_uid);
 	file->gid = getgrgid(file->stat.st_gid);
 	(ft_atoi(v->link) < file->stat.st_nlink)
-		? (v->link = ft_itoa(file->stat.st_nlink)) : 0;
+		? (reassign_value(&v->link, ft_itoa(file->stat.st_nlink), 1)) : 0;
 	(file->uid && ft_strlen(v->usr) < ft_strlen(file->uid->pw_name))
-		? (v->usr = ft_strdup(file->uid->pw_name)) : 0;
+		? (reassign_value(&v->usr, ft_strdup(file->uid->pw_name), 1)) : 0;
 	(file->gid && ft_strlen(v->grp) < ft_strlen(file->gid->gr_name))
-		? (v->grp = ft_strdup(file->gid->gr_name)) : 0;
+		? (reassign_value(&v->grp, ft_strdup(file->gid->gr_name), 1)) : 0;
 	(ft_atoi(v->size) < file->stat.st_size)
-		? (v->size = ft_itoa(file->stat.st_size)) : 0;
+		? (reassign_value(&v->size, ft_itoa(file->stat.st_size), 1)) : 0;
 	ft_strdel(&part);
 	file->time = (int)file->stat.st_mtime;
 }
