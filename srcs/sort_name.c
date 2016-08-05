@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:10:36 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/08/05 08:18:04 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/08/05 09:36:15 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static void	time_sort(t_list *cursor, char rev, int *is_not_sorted)
 {
 	t_list	*current;
 	t_list	*next;
-	t_file	*tmp;
 	t_file	*file;
 	t_file	*next_file;
 

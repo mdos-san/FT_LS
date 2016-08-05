@@ -6,13 +6,13 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:12:00 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/08/05 09:19:25 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/08/05 09:38:53 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static void	add_dir(t_list *lst, char *path, char *file, int *b)
+static void	add_dir(t_list *lst, char *path, int *b)
 {
 	t_dir_container	dir;
 	t_list			*new;
@@ -90,14 +90,13 @@ static void	render_loop(t_astr *astr, t_list *dir,
 		{
 			(flags[2] && ft_strcmp(file->name, ".") != 0 &&
 			ft_strcmp(file->name, "..") != 0 && S_ISDIR(file->stat.st_mode)) ?
-					add_dir(dir, file->path, file->name, &add_bool) : 0;
-			render_l_flag(astr, dir_content->dir_name,
-					file, dir_content->v);
+					add_dir(dir, file->path, &add_bool) : 0;
+			render_l_flag(astr, file, dir_content->v);
 		}
 		else if (file->name[0] != '.' || flags[1])
 		{
 			(flags[2] && S_ISDIR(file->stat.st_mode))
-				? add_dir(dir, file->path, file->name, &add_bool) : 0;
+				? add_dir(dir, file->path, &add_bool) : 0;
 			astr_add_strl(astr, file->name, 0);
 		}
 		files = files->next;

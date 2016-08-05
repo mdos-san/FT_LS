@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 07:58:04 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/08/05 09:05:27 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/08/05 09:37:43 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,10 @@ static void	get_right(t_file *file, t_astr *astr, t_view v)
 	astr_add_str(astr, " ", 0);
 }
 
-void		render_l_flag(t_astr *astr, char *dir,
+void		render_l_flag(t_astr *astr,
 			t_file *file, t_view v)
 {
 	char			*date;
-	char			*nb;
-	char			*col;
 
 	get_right(file, astr, v);
 	(file->uid) ? astr_add_str(astr, file->uid->pw_name, 0)
