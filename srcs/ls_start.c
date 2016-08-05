@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls_start.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/08/05 08:00:19 by mdos-san          #+#    #+#             */
+/*   Updated: 2016/08/05 08:00:24 by mdos-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 static void	ls_read(t_ls *ls)
@@ -29,7 +41,7 @@ static void	ls_error(t_ls *ls)
 	ft_strdel(&ls->error);
 }
 
-void	ls_start(t_ls *ls)
+void		ls_start(t_ls *ls)
 {
 	while (ls->cursor != NULL)
 	{

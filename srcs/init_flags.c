@@ -6,18 +6,11 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 21:08:24 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/07/07 22:44:07 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/08/05 08:15:40 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-/*
-**	This function init flags values
-**
-**	It return an address representing the new begining of the pile in case flags is first in pile
-**	(because flags is removed from the pile)
-*/
 
 static t_list	*remove_flags(t_list *list)
 {
@@ -46,7 +39,7 @@ static t_list	*remove_flags(t_list *list)
 	return (start);
 }
 
-static void	var_init(char *flags)
+static void		var_init(char *flags)
 {
 	flags[0] = 0;
 	flags[1] = 0;
@@ -55,7 +48,7 @@ static void	var_init(char *flags)
 	flags[4] = 0;
 }
 
-t_list	*init_flags(char *flags, t_list *list)
+t_list			*init_flags(char *flags, t_list *list)
 {
 	char	*value;
 	t_list	*cursor;
@@ -76,7 +69,7 @@ t_list	*init_flags(char *flags, t_list *list)
 			(ft_strchr(value, (int)'t')) ? (flags[4] = 1) : 0;
 		}
 		else
-			end++;	
+			end++;
 		cursor = cursor->next;
 	}
 	return (remove_flags(list));

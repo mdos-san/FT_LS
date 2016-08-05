@@ -1,16 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   astr_add_str.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/08/05 07:46:48 by mdos-san          #+#    #+#             */
+/*   Updated: 2016/08/05 08:03:06 by mdos-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-/*
-**
-**
-**	This function append str to the astr.str
-**	it will realoc astr.str if needed.
-**
-**
-**
-*/
-
-static void	append_str(t_astr * astr, char *str, int index)
+static void	append_str(t_astr *astr, char *str, int index)
 {
 	ft_strcat(astr->str + astr->index, str);
 	astr->index = index;
@@ -36,5 +38,5 @@ void		astr_add_str(t_astr *astr, char *str, int str_free)
 	(astr->index + str_size < astr->nbr_block * ASTR_BLOCK_SIZE)
 	? append_str(astr, str, str_size + astr->index)
 	: realloc_str(astr, str, str_size + astr->index);
-	(str_free == 1) ? free(str) : 0 ;
+	(str_free == 1) ? free(str) : 0;
 }

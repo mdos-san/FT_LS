@@ -1,11 +1,16 @@
-#include "ft_ls.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   astr_delete.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/08/05 07:47:13 by mdos-san          #+#    #+#             */
+/*   Updated: 2016/08/05 08:03:18 by mdos-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*
-**
-**	this function just free the str part of an astr
-**	astr is normally never allocated.
-**
-*/
+#include "ft_ls.h"
 
 void	astr_delete(t_astr *astr)
 {

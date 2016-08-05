@@ -1,18 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   astr_create.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/08/05 08:03:22 by mdos-san          #+#    #+#             */
+/*   Updated: 2016/08/05 08:03:36 by mdos-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-/*
-**
-**	This function create an str that will automaticly reallocate memory if needed;
-**
-**	struct name is t_astr and contain:
-**
-**	str : a char * representing the array of char;
-**	index : the actual position to write content;
-**	nbr_block : The number of blocks allocated to this astr;
-**
-*/
-
-t_astr	astr_create()
+t_astr	astr_create(void)
 {
 	t_astr	astr;
 
