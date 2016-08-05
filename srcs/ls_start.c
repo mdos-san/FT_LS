@@ -6,7 +6,7 @@
 /*   By: mdos-san <mdos-san@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 08:00:19 by mdos-san          #+#    #+#             */
-/*   Updated: 2016/08/05 08:00:24 by mdos-san         ###   ########.fr       */
+/*   Updated: 2016/08/05 09:56:24 by mdos-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void		ls_start(t_ls *ls)
 				astr_add_str(&ls->astr, ":\n", 0);
 			}
 			ls_read(ls);
+			(ls->cursor->next != NULL) ? astr_add_str(&ls->astr, "\n", 0) : 0;
 		}
 		else
 		{
@@ -63,8 +64,8 @@ void		ls_start(t_ls *ls)
 			: astr_add_strl(&ls->file_astr, ls->d_content->dir_name, 0);
 		}
 		ls->cursor = ls->cursor->next;
-		(ls->cursor != NULL) ? astr_add_str(&ls->astr, "\n", 0) : 0;
 	}
-	(ft_strcmp(ls->file_astr.str, "") != 0) ? ft_putendl(ls->file_astr.str) : 0;
-	ft_putstr(ls->astr.str);
+	(ft_strcmp(ls->file_astr.str, "") != 0) ? ft_putstr(ls->file_astr.str) : 0;
+	(ft_strcmp(ls->astr.str, "") != 0 ) ? ft_putchar('\n'): 0;
+	(ft_strcmp(ls->astr.str, "") != 0) ? ft_putstr(ls->astr.str) : 0;
 }
